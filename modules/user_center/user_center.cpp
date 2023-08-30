@@ -29,9 +29,11 @@ using bsoncxx::builder::stream::open_array;
 using bsoncxx::builder::stream::open_document;
 
 extern mongocxx::pool mongodb_pool;
-
+httplib::Headers DotCS_Headers {
+	{"dlfaps","123456"} //DotCS Key(别想了,源代码里面写的Key是错误的)
+};
 httplib::Client stripeClient("https://api.stripe.com");
-
+httplib::Client dotcsClient("192.168.1.11",21512);
 void FBUC::finalizePaymentIntent(std::shared_ptr<FBUC::PaymentIntent> intent, FBWhitelist::User *user, std::string const& helper_name) {
 	auto pSession=intent->session.lock();
 	if(pSession) {
@@ -126,6 +128,7 @@ static void FBUC::enter_action_clust(FBUC::Action *action, Json::Value& parsed_a
 
 
 extern "C" void init_user_center() {
+	dotcsClient.set_keep_alive(true);
 	stripeClient.set_keep_alive(true);
 	stripeClient.set_bearer_token_auth(Secrets::get_stripe_key());
 	std::thread([](){
@@ -348,10 +351,10 @@ extern "C" void init_user_center() {
 			}
 			FBUC::finalizePaymentIntent(intent, user->user.get(), fmt::format("@Stripe+{}", session["id"].asString()));
 		});
-		server.Options(R"(/api/(administrative/)?((phoenix/)?[0-9a-zA-Z_]+)$)", [](const httplib::Request& req, httplib::Response& res) {
+		server.Options(R"(/api/(administrative/)?(((phoenix/)|(dotcs/))?[0-9a-zA-Z_]+)$)", [](const httplib::Request& req, httplib::Response& res) {
 			res.status=204;
 		});
-		server.Get(R"(/api/(administrative/)?((phoenix/)?[0-9a-zA-Z_]+)$)", [](const httplib::Request& req, httplib::Response& res) {
+		server.Get(R"(/api/(administrative/)?(((phoenix/)|(dotcs/))?[0-9a-zA-Z_]+)$)", [](const httplib::Request& req, httplib::Response& res) {
 			if(!req.matches[2].length()) {
 				res.status=404;
 				return;
@@ -371,7 +374,7 @@ extern "C" void init_user_center() {
 			}
 			enter_action_clust(action, parsed_args, req, res, isAdministrative);
 		});
-		server.Post(R"(/api/(administrative/)?((phoenix/)?[0-9a-zA-Z_]+)$)", [](const httplib::Request& req, httplib::Response& res) {
+		server.Post(R"(/api/(administrative/)?(((phoenix/)|(dotcs/))?[0-9a-zA-Z_]+)$)", [](const httplib::Request& req, httplib::Response& res) {
 			if(!req.matches[2].length()) {
 				res.status=404;
 				return;
@@ -405,6 +408,6 @@ extern "C" void init_user_center() {
 				res.set_header("access-control-allow-origin", "https://user.fastbuilder.pro");
 			}
 		});
-		server.listen("127.0.0.1", 8687);
+		server.listen("0.0.0.0", 8687);
 	}).detach();
 }
