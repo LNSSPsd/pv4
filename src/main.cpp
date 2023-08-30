@@ -33,7 +33,7 @@ typedef sig_t sighandler_t;
 #endif
 
 mongocxx::instance mongodb_instance;
-mongocxx::pool mongodb_pool{mongocxx::uri{"mongodb://127.0.0.1:27017"}};
+mongocxx::pool mongodb_pool{mongocxx::uri{"mongodb://192.168.1.11:27017"}};
 
 //bool rescue_mode=false;
 //std::string rescue_mode_cause;
