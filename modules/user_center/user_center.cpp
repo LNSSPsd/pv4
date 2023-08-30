@@ -33,7 +33,7 @@ httplib::Headers DotCS_Headers {
 	{"dlfaps","123456"} //DotCS Key(别想了,源代码里面写的Key是错误的)
 };
 httplib::Client stripeClient("https://api.stripe.com");
-httplib::Client dotcsClient("192.168.1.11",21512);
+httplib::Client dotcsClient("192.168.1.11",21512);// DotCS 服务器的地址,这里是测试地址。
 void FBUC::finalizePaymentIntent(std::shared_ptr<FBUC::PaymentIntent> intent, FBWhitelist::User *user, std::string const& helper_name) {
 	auto pSession=intent->session.lock();
 	if(pSession) {
