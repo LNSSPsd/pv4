@@ -188,6 +188,8 @@ namespace FBWhitelist {
 		DBValue<NEMCUserAuthInfo> nemc_binded_account="nemc_binded_account";
 		DBValue<std::string> phoenix_login_otp="phoenix_login_otp";
 		DBValue<bool> disable_all_security_measures="disable_all_security_measures";
+		DBValue<std::string> DotCS_User_Name="DotCS_User_Name";
+		DBValue<bool> isDotCS="isDotCS";
 		std::shared_ptr<uint32_t> rate_limit_counter=std::make_shared<uint32_t>(0);
 		std::shared_ptr<bool> keep_reference=std::make_shared<bool>(false);
 		
