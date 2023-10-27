@@ -43,7 +43,7 @@
 	},
 	{
 		"name":"DotCS_Web_Api",
-		"path":"./modules/dotcs_web_api/libdotcs-web-api.so",
+		"path":"./modules/dotcs_web_api/libpv4-dotcs-web-api.so",
 		"init_funcs": [
 			"init_dotcs_web"
 		]
