@@ -31,6 +31,11 @@ else()
 	add_subdirectory(modules/nemc_helper)
 endif()
 add_subdirectory(modules/user_center)
+if(EXISTS ${PROJECT_SOURCE_DIR}/modules/private/dotcs_web_api)
+	add_subdirectory(${PROJECT_SOURCE_DIR}/modules/private/dotcs_web_api)
+else()
+	add_subdirectory(modules/dotcs_web_api)
+endif()
 
 find_package(OpenSSL REQUIRED)
 
